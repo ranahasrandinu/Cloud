@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Cloud Storage</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>☁ My Firebase Cloud</title>
 </head>
 <body>
-  <h1>☁ My Cloud Storage</h1>
+  <h1>☁ Firebase Cloud Storage</h1>
 
-  <!-- Login / Signup -->
+  <!-- Auth Section -->
   <div id="authSection">
     <h2>Login / Signup</h2>
     <input id="email" type="email" placeholder="Email"><br>
-    <input id="password" type="password" placeholder="Password"><br>
+    <input id="password" type="password" placeholder="Password"><br><br>
     <button onclick="signup()">Sign Up</button>
     <button onclick="login()">Login</button>
     <button onclick="logout()">Logout</button>
   </div>
 
-  <!-- Upload -->
+  <!-- Upload Section -->
   <div id="uploadSection" style="display:none;">
     <h2>Upload File</h2>
     <input type="file" id="fileInput"><br><br>
@@ -31,58 +31,59 @@
   <!-- Firebase SDKs -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, 
-             signInWithEmailAndPassword, signOut, onAuthStateChanged } 
-             from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-    import { getStorage, ref, uploadBytes, listAll, getDownloadURL } 
-             from "https://www.gstatic.com/firebasejs/12.3.0/firebase-storage.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+      from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+    import { getStorage, ref, uploadBytes, listAll, getDownloadURL }
+      from "https://www.gstatic.com/firebasejs/12.3.0/firebase-storage.js";
 
     // 🔧 Your Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyCaZCeVenbpo8QQzzkYDAkaqi1PogpsVI0",
       authDomain: "cloud-84b07.firebaseapp.com",
       projectId: "cloud-84b07",
-      storageBucket: "cloud-84b07.appspot.com", // ✅ fixed domain
+      storageBucket: "cloud-84b07.appspot.com", // ✅ fixed bucket
       messagingSenderId: "182965593437",
       appId: "1:182965593437:web:303726b8a9f9760adcb4b4",
       measurementId: "G-WGBYTKSVHM"
     };
 
-    // Init
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const storage = getStorage(app);
 
-    // --- Auth ---
-    window.signup = async function() {
+    // --- Signup ---
+    window.signup = async function () {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       try {
         await createUserWithEmailAndPassword(auth, email, password);
-        alert("✅ Signed up successfully");
+        alert("✅ Signup successful");
       } catch (err) {
         alert("Error: " + err.message);
       }
-    }
+    };
 
-    window.login = async function() {
+    // --- Login ---
+    window.login = async function () {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        alert("✅ Logged in");
+        alert("✅ Login successful");
       } catch (err) {
         alert("Error: " + err.message);
       }
-    }
+    };
 
-    window.logout = async function() {
+    // --- Logout ---
+    window.logout = async function () {
       await signOut(auth);
       alert("👋 Logged out");
-    }
+    };
 
     // --- Upload File ---
-    window.uploadFile = async function() {
+    window.uploadFile = async function () {
       const file = document.getElementById("fileInput").files[0];
       if (!file) { alert("Please select a file"); return; }
 
@@ -90,7 +91,7 @@
       await uploadBytes(fileRef, file);
       alert("✅ File uploaded!");
       listFiles();
-    }
+    };
 
     // --- List Files ---
     async function listFiles() {
